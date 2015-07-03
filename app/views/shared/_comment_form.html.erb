@@ -1,8 +1,10 @@
-<%= form_for(@comment) do |f| %>
+<%= form_for(@comment,remote: true) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="field">
+  	<div id="com_form">
     <%= f.text_field :content, placeholder: "Compose new comment..." %>
   </div>
+	</div>
   <div><%= hidden_field_tag :entry_id, @entry.id %></div>
   <%= f.submit "Post", class: "btn btn-primary" %>
 <% end %>

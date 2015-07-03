@@ -24,23 +24,21 @@
 <% if logged_in? %>
   <div class="row">  
       <section class="entry_form">
-        <%= form_for(@comment) do |f| %>
-          <%= render 'shared/error_messages', object: f.object %>
-          <div class="field">
-          <%= f.text_field :content, placeholder: "Compose new comment..." %>
-          </div>
-          <div><%= hidden_field_tag :entry_id, @entry.id %></div>
-          <%= f.submit "Post", class: "btn btn-primary" %>
-        <% end %>
+
+       <%= render 'shared/comment_form'%>
+
       </section>
   </div>
 <% else %>
   <%=link_to "Please login to comment!", login_path%>
 <% end %>
 
-<% if @comments.any? %>
+
+
 <ul class="comments">
+  <div id='com'>
   <%= render @comments %>
+</div>
 </ul>
+
 <%= will_paginate @comments %>
-<% end %>
