@@ -1,0 +1,46 @@
+<% provide(:title, @entry.title) %>
+<div class="entry">
+  <%= link_to gravatar_for(@entry.user, size: 50), @entry.user %>
+  <span class="user"><%= link_to @entry.user.name, @entry.user %></span>
+  <span class="timestamp">
+    Posted at <%= @entry.created_at %>  
+  </span>
+  <span class="title"><%= @entry.title %></span>
+  <span class="body">
+  	<%= @entry.body %>
+  	<%= image_tag @entry.picture.url if @entry.picture? %>
+  </span>
+  <span class="timestamp">
+    Last edited about <%= time_ago_in_words(@entry.updated_at) %>  ago.
+    <% if current_user?(@entry.user) %>
+    <%= link_to "edit", edit_entry_path(@entry) %> |
+    <%= link_to "delete", @entry, method: :delete,
+                                     data: { confirm: "You sure?" } %>
+    <% end %>
+  </span>
+  
+</div>
+
+<% if logged_in? %>
+  <div class="row">  
+      <section class="entry_form">
+        <%= form_for(@comment) do |f| %>
+          <%= render 'shared/error_messages', object: f.object %>
+          <div class="field">
+          <%= f.text_field :content, placeholder: "Compose new comment..." %>
+          </div>
+          <div><%= hidden_field_tag :entry_id, @entry.id %></div>
+          <%= f.submit "Post", class: "btn btn-primary" %>
+        <% end %>
+      </section>
+  </div>
+<% else %>
+  <%=link_to "Please login to comment!", login_path%>
+<% end %>
+
+<% if @comments.any? %>
+<ul class="comments">
+  <%= render @comments %>
+</ul>
+<%= will_paginate @comments %>
+<% end %>
